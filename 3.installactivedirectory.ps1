@@ -1,3 +1,4 @@
+$dnsdomain = "intranet.mijnschool.be"
 Install-WindowsFeature AD-Domain-Services -IncludeManagementTools
 
 Import-Module ADDSDeployment
