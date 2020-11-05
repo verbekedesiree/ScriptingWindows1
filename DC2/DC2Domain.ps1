@@ -1,8 +1,9 @@
 ﻿##DC2 update naar windows domein.
 
 #Static maken dc2 kijken bij dhcp welke ip adres hij geeft. 192.168.100.13
+$ipdc2="192.168.100.12"
 
-Invoke-Command -ComputerName 192.168.100.13 -ScriptBlock {
+Invoke-Command -ComputerName $ipdc2 -ScriptBlock {
 
 #set ip address
 New-NetIPAddress -InterfaceAlias "Ethernet0" -IPAddress "192.168.100.3" -PrefixLength 24 -DefaultGateway '192.168.100.254'
@@ -15,6 +16,7 @@ Set-DnsClientServerAddress -InterfaceAlias "Ethernet0" -ServerAddresses ("192.16
 Invoke-Command -ComputerName Win14-DC2 -ScriptBlock {Add-computer -DomainName intranet.mijnschool.be} -Credential Administrator 
 
 ## upgrade van dc in een bestaande domain. inloggen met administrator@intranet.mijnschool.be
+##eerst dit in selectie runnen daarna enter pssession, get command, install-adds en exit alles apart uitvoeren
 Install-WindowsFeature -ComputerName Win14-DC2 -Name AD-Domain-Services
     Enter-PSSession -ComputerName Win14-DC2
     Get-Command -Module ADDSDeployment

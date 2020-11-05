@@ -1,6 +1,6 @@
 ﻿Import-Module activedirectory
 
-$FileCSV = "C:\users\Administrator\Desktop\scripting\useraccount.csv"
+$FileCSV = "C:\users\Administrator\Desktop\ScriptingWindows1\useraccount.csv"
 #param([parameter(Mandatory=$true)] [String]$FileCSV)
 $listusers=Import-CSV $FileCSV -Delimiter ";"
 $HomeServer = "Win14MS"

@@ -1,5 +1,5 @@
 ﻿Import-Module ActiveDirectory
-$FileCSV = "C:\users\Administrator\Desktop\scripting\GroupMembers.csv"
+$FileCSV = "C:\users\Administrator\Desktop\ScriptingWindows1\GroupMembers.csv"
 #param([parameter(Mandatory=$true)] [String]$FileCSV)
 $grouplist=Import-CSV $FileCSV -Delimiter ";"
 ForEach($groupmember in $grouplist) {

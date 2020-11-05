@@ -1,17 +1,21 @@
 ﻿#MS in domain stoppen
-Invoke-Command -ComputerName Win14MS -ScriptBlock {Add-Computer -DomainName intranet.mijnschool.be } -Credential Administrator 
+Invoke-Command -ComputerName Win14-MS -ScriptBlock {Add-Computer -DomainName intranet.mijnschool.be } -Credential Administrator 
 
 #home folder maken
 
-Invoke-Command -ComputerName Win14MS -ScriptBlock { New-Item -Name "home" -Path 'C:\home' -ItemType Directory} -Credential Administrator 
+Invoke-Command -ComputerName Win14-MS -ScriptBlock { New-Item -Name "home" -Path 'C:\home' -ItemType Directory} -Credential Administrator 
 
 #iedereen full controle
-Invoke-Command -ComputerName Win14MS -ScriptBlock {
-New-SmbShare  -Path 'C:\home' -FullAccess Everyone}
--Credential Administrator
+Invoke-Command -ComputerName Win14-MS -ScriptBlock {
+icacls "C:\home" /grant Everyone:F /T
+New-SmbShare  -Path 'C:\home' -FullAccess Everyone
+} -Credential Administrator
+
+
+
 
 #disable inheritance
-Invoke-Command -ComputerName Win14MS -ScriptBlock{
+Invoke-Command -ComputerName Win14-MS -ScriptBlock{
 $folder='C:\home'
 $acl = Get-ACL -Path $folder
 $acl.SetAccessRuleProtection($True, $True)
@@ -20,7 +24,23 @@ Set-Acl -Path $folder -AclObject $acl
  } -Credential Administrator 
 
 
- # add user security permissions
+ # remove user security permissions
+Invoke-Command -ComputerName Win14-MS -ScriptBlock{
+    $folder='C:\home'
+    $acl = Get-ACl $folder
+    $accessrule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", "read",,, "allow")
+    $acl.RemoveAccessRule($accessrule)
+    Set-ACl -Path $folder -AclObject $acl
+ } -Credential Administrator
 
-#####!!!!!! nog te zoeken hoe je authenticated users toevoegt
+
+ ##user toevoegen
+
+Invoke-Command -ComputerName Win14-MS -ScriptBlock{
+    $folder='C:\home'
+    $acl = Get-ACl $folder
+    $accessrule = New-Object System.Security.AccessControl.FileSystemAccessRule("Authenticated users", "FullControl", "allow")
+    $acl.SetAccessRule($accessrule)
+    $acl | Set-Acl $folder
+ } -Credential Administrator
 

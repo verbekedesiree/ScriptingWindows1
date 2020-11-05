@@ -1,5 +1,5 @@
 #https://www.alexandreviot.net/2015/04/27/active-directory-create-ou-using-powershell/
-$FileCSV = "C:\Users\Administrator\Desktop\scripting\ous.csv"
+$FileCSV = "C:\Users\Administrator\Desktop\ScriptingWindows1\ous.csv"
 #param([parameter(Mandatory=$true)] [String]$FileCSV)
 $listOU=Import-CSV $FileCSV -Delimiter ";"
 ForEach($OU in $listOU){
