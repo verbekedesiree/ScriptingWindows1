@@ -26,11 +26,10 @@ Set-Acl -Path $folder -AclObject $acl
 
  # remove user security permissions
 Invoke-Command -ComputerName Win14-MS -ScriptBlock{
-    $folder='C:\home'
-    $acl = Get-ACl $folder
-    $accessrule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", "read",,, "allow")
-    $acl.RemoveAccessRule($accessrule)
-    Set-ACl -Path $folder -AclObject $acl
+    $acl = Get-ACl "C:\home"
+    $accessrule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", "Read",,, "Allow")
+    $acl.RemoveAccessRuleAll($accessrule)
+    Set-ACl -Path "C:\home" -AclObject $acl
  } -Credential Administrator
 
 
